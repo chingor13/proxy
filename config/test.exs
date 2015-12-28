@@ -8,12 +8,3 @@ config :proxy, Proxy.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
-
-# Configure your database
-config :proxy, Proxy.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "proxy_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
