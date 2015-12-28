@@ -10,7 +10,7 @@ defmodule Proxy do
       # Start the endpoint when the application starts
       supervisor(Proxy.Endpoint, []),
       # Start the Ecto repository
-      worker(Proxy.Repo, []),
+      # worker(Proxy.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(Proxy.Worker, [arg1, arg2, arg3]),
     ]
