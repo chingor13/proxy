@@ -9,7 +9,7 @@ defmodule Proxy.Fetcher do
   ]
 
   def fetch_and_compare(path, opts) do
-    {time, response} = fetch_with_timing(opts[:master], path)
+    {time, response} = fetch_with_timing(opts[:primary], path)
 
     if should_compare?(response) do
       Task.async(fn -> fetch_with_timing(opts[:secondary], path) |> Proxy.Comparison.compare({time, response}, path) end)

@@ -33,9 +33,9 @@ defmodule Proxy.Comparison do
 
     Logger.debug fn ->
       if time2 > time1 do
-        "experimental (#{time1}μs) was faster than the control (#{time2}μs)"
+        "secondary (#{time1}μs) was faster than the primary (#{time2}μs)"
       else
-        "control (#{time2}μs) was faster than the experimental (#{time1}μs)"
+        "primary (#{time2}μs) was faster than the secondary (#{time1}μs)"
       end
     end
     Logger.info(comparison)

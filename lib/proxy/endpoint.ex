@@ -11,18 +11,20 @@ defmodule Proxy.Endpoint do
 
   def init(opts), do: opts
 
-  def start_link(master, secondary) do
-    Plug.Adapters.Cowboy.http __MODULE__, [master: master, secondary: secondary], [port: 8888]
+  def start_link(opts \\ []) do
+    {endpoint_opts, cowboy_opts} = Keyword.split(opts, [:primary, :secondary])
+    Plug.Adapters.Cowboy.http __MODULE__, endpoint_opts, cowboy_opts
   end
 
   def call(conn, opts) do
-    # proxy request to master server
+    conn = conn |> Plug.Logger.call(:debug)
+
+    # proxy request to primary server
     response = conn.path_info
       |> Proxy.Fetcher.fetch_and_compare(opts)
 
     # send original response
     conn
-      |> Plug.Logger.call(:debug)
       |> merge_resp_headers(headers_to_merge(response))
       |> send_resp(response.status_code, response.body)
   end
