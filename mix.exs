@@ -34,6 +34,7 @@ defmodule Proxy.Mixfile do
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
+     {:exrm, "1.0.0-rc7"},
      {:httpoison, "~> 0.7.2"}]
   end
 
