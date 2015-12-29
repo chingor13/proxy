@@ -28,8 +28,8 @@ defmodule Proxy do
 
   defp port do
     case System.get_env("PORT") do
-      "" -> @default_port
-      p  -> String.to_integer(p)
+      nil -> @default_port
+      p   -> String.to_integer(p)
     end
 
   end
