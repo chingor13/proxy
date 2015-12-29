@@ -15,7 +15,7 @@ defmodule Proxy.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [mod: {Proxy, []},
-     applications: [:logger, :cowboy, :plug, :httpoison]]
+     applications: [:logger, :cowboy, :plug, :httpoison, :poison]]
   end
 
   # Dependencies can be Hex packages:
