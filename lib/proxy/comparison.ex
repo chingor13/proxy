@@ -10,7 +10,7 @@ defmodule Proxy.Comparison do
       experimental: time1,
       body_matched: true,
       headers_matched: true,
-      path: Enum.join(path, "/")
+      path: path
     }
 
     Logger.debug "comparing both json responses"

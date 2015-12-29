@@ -20,7 +20,7 @@ defmodule Proxy.Endpoint do
     conn = conn |> Plug.Logger.call(:debug)
 
     # proxy request to primary server
-    response = conn.path_info
+    response = conn
       |> Proxy.Fetcher.fetch_and_compare(opts)
 
     # send original response
