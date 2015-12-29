@@ -22,8 +22,16 @@ defmodule Proxy do
     Keyword.new([
       {:primary, System.get_env("PRIMARY_BASE_URL")},
       {:secondary, System.get_env("SECONDARY_BASE_URL")},
-      {:port, System.get_env("PORT") || @default_port}
+      {:port, port}
     ])
+  end
+
+  defp port do
+    case System.get_env("PORT") do
+      "" -> @default_port
+      p  -> String.to_integer(p)
+    end
+
   end
 
 end
