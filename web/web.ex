@@ -18,10 +18,10 @@ defmodule Proxy.Web do
 
   def model do
     quote do
-      use Ecto.Model
+    #   use Ecto.Model
 
-      import Ecto.Changeset
-      import Ecto.Query, only: [from: 1, from: 2]
+    #   import Ecto.Changeset
+    #   import Ecto.Query, only: [from: 1, from: 2]
     end
   end
 
@@ -29,9 +29,9 @@ defmodule Proxy.Web do
     quote do
       use Phoenix.Controller
 
-      alias Proxy.Repo
-      import Ecto.Model
-      import Ecto.Query, only: [from: 1, from: 2]
+      # alias Proxy.Repo
+      # import Ecto.Model
+      # import Ecto.Query, only: [from: 1, from: 2]
 
       import Proxy.Router.Helpers
     end
@@ -61,9 +61,9 @@ defmodule Proxy.Web do
     quote do
       use Phoenix.Channel
 
-      alias Proxy.Repo
-      import Ecto.Model
-      import Ecto.Query, only: [from: 1, from: 2]
+      # alias Proxy.Repo
+      # import Ecto.Model
+      # import Ecto.Query, only: [from: 1, from: 2]
     end
   end
 
