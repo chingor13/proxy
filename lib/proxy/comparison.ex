@@ -14,8 +14,8 @@ defmodule Proxy.Comparison do
     }
 
     Logger.debug "comparing both json responses"
-    {:ok, data1} = Poison.decode(body1)
-    {:ok, data2} = Poison.decode(body2)
+    data1 = Poison.decode!(body1)
+    data2 = Poison.decode!(body2)
 
     unless check(data1, data2) do
       Logger.debug "Failed to match data"
@@ -26,6 +26,8 @@ defmodule Proxy.Comparison do
 
     unless check(headers1, headers2) do
       Logger.debug "Failed to match headers"
+      Logger.debug inspect(headers1)
+      Logger.debug inspect(headers2)
       comparison = %{comparison | headers_matched: false}
     end
 

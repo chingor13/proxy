@@ -4,48 +4,34 @@ defmodule Proxy.Mixfile do
   def project do
     [app: :proxy,
      version: "0.0.1",
-     elixir: "~> 1.0",
-     elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix] ++ Mix.compilers,
+     elixir: "~> 1.1",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases,
      deps: deps]
   end
 
-  # Configuration for the OTP application.
+  # Configuration for the OTP application
   #
-  # Type `mix help compile.app` for more information.
+  # Type "mix help compile.app" for more information
   def application do
     [mod: {Proxy, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :httpoison]]
+     applications: [:logger, :cowboy, :plug, :httpoison]]
   end
 
-  # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
-
-  # Specifies your project dependencies.
+  # Dependencies can be Hex packages:
   #
-  # Type `mix help deps` for examples and options.
+  #   {:mydep, "~> 0.3.0"}
+  #
+  # Or git/path repositories:
+  #
+  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
+  #
+  # Type "mix help deps" for more examples and options
   defp deps do
-    [{:phoenix, "~> 1.1"},
-     # {:phoenix_ecto, "~> 1.1"},
-     {:phoenix_html, "~> 2.1"},
-     {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:cowboy, "~> 1.0"},
+    [{:cowboy, "~> 1.0"},
+     {:plug, "~> 1.0"},
      {:exrm, "1.0.0-rc7"},
+     {:poison, "~> 1.0"},
      {:httpoison, "~> 0.7.2"}]
-  end
-
-  # Aliases are shortcut or tasks specific to the current project.
-  # For example, to create, migrate and run the seeds file at once:
-  #
-  #     $ mix ecto.setup
-  #
-  # See the documentation for `Mix` for more info on aliases.
-  defp aliases do
-    ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"]]
   end
 end

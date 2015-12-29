@@ -1,39 +1,35 @@
 defmodule Proxy.Endpoint do
-  use Phoenix.Endpoint, otp_app: :proxy
+  @behaviour Plug
+  import Plug.Conn
 
-  socket "/socket", Proxy.UserSocket
+  @headers_to_allow [
+    "content-type",
+    "x-request-id",
+    "x-frame-options",
+    "x-runtime"
+  ]
 
-  # Serve at "/" the static files from "priv/static" directory.
-  #
-  # You should set gzip to true if you are running phoenix.digest
-  # when deploying your static files in production.
-  plug Plug.Static,
-    at: "/", from: :proxy, gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+  def init(opts), do: opts
 
-  # Code reloading can be explicitly enabled under the
-  # :code_reloader configuration of your endpoint.
-  if code_reloading? do
-    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
-    plug Phoenix.LiveReloader
-    plug Phoenix.CodeReloader
+  def start_link(master, secondary) do
+    Plug.Adapters.Cowboy.http __MODULE__, [master: master, secondary: secondary], [port: 8888]
   end
 
-  plug Plug.RequestId
-  plug Plug.Logger
+  def call(conn, opts) do
+    # proxy request to master server
+    response = conn.path_info
+      |> Proxy.Fetcher.fetch_and_compare(opts)
 
-  plug Plug.Parsers,
-    parsers: [:urlencoded, :multipart, :json],
-    pass: ["*/*"],
-    json_decoder: Poison
+    # send original response
+    conn
+      |> Plug.Logger.call(:debug)
+      |> merge_resp_headers(headers_to_merge(response))
+      |> send_resp(response.status_code, response.body)
+  end
 
-  plug Plug.MethodOverride
-  plug Plug.Head
-
-  plug Plug.Session,
-    store: :cookie,
-    key: "_proxy_key",
-    signing_salt: "VztDqPdG"
-
-  plug Proxy.Router
+  defp headers_to_merge(response) do
+    response.headers
+      |> Enum.reduce(%{}, fn({k,v}, map) -> Map.put(map, String.downcase(k), v) end)
+      |> Map.take(@headers_to_allow)
+  end
 end
